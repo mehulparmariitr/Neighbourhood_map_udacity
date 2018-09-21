@@ -14,6 +14,29 @@ var FSQ_URL =
 
 var map = null;
 
+var MapModel = function(data) {
+  var self = this;
+
+  this.name = data.name;
+  this.lng = data.lng;
+  this.lat = data.lat;
+  this.loc = data.loc;
+  this.state = data.state;
+  this.phone = data.phone;
+  this.country = data.country;
+  this.url = data.url;
+
+  this.address = ko.pureComputed(function() {
+    if ((self.loc && self.state && self.country) !== undefined)
+      return self.loc + ", " + self.state + ", " + self.country;
+    else return "No address found";
+  });
+
+  this.marker = data.marker;
+  this.visibleMarker = ko.observable(true);
+  this.infoWindowContent = data.infoWindowContent;
+};
+
 /*
  * @description Error handler for loading of Google Maps APIs.
  * */
@@ -35,7 +58,7 @@ function startApp() {
     zoom: 8
   });
 
-  //infoWindow = new google.maps.InfoWindow();
+  infoWindow = new google.maps.InfoWindow();
   //viewModel.loadLocations(FSQ_REQUEST_URL);
   // Subscribe to filteredLocations, change Map Items when it's changed.
   //viewModel.filteredLocations.subscribe(function () {
