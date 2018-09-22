@@ -14,7 +14,7 @@ var FSQ_URL =
 
 var map = null;
 
-var MapModel = function(data) {
+var Model = function (data) {
   var self = this;
 
   this.name = data.name;
@@ -22,11 +22,10 @@ var MapModel = function(data) {
   this.lat = data.lat;
   this.loc = data.loc;
   this.state = data.state;
-  this.phone = data.phone;
   this.country = data.country;
   this.url = data.url;
 
-  this.address = ko.pureComputed(function() {
+  this.address = ko.pureComputed(function () {
     if ((self.loc && self.state && self.country) !== undefined)
       return self.loc + ", " + self.state + ", " + self.country;
     else return "No address found";
@@ -37,10 +36,52 @@ var MapModel = function(data) {
   this.infoWindowContent = data.infoWindowContent;
 };
 
+
+var viewModel = function (data) {
+  var self = this;
+
+  this.locations = ko.observableArray();
+
+  this.getLocations = function (url) {
+    $.getJSON(url, function (data) {
+
+      var venues = data.response.venues;
+
+      venues.forEach(function (venue) {
+        var marker = new google.maps.Marker({
+          map: null,
+          animation: google.maps.Animation.DROP,
+          position: { lat: venue.location.lat, lng: venue.location.lng },
+          title: venue.name
+        });
+        var ModelVenue = new Model({
+          'state': venue.location.state,
+          'country': venue.location.country,
+          'url': venue.url,
+          'marker': marker,
+          'name': venue.name,
+          'lat': venue.location.lat,
+          'lng': venue.location.lng,
+          'loc': venue.location.address
+        });
+        ModelVenue.infoWindowContent = createInfoWindow(ModelVenue);
+
+        self.locations.push(ModelVenue);
+      });
+
+      // Re-Load the markers on the map once the data arrives.
+      setupMarkers();
+    }).fail(function (jqXHR, textStatus, error) {
+      alertify.error('Error in getting data <br />' + error);
+    });
+  };
+
+}
+
 /*
  * @description Error handler for loading of Google Maps APIs.
  * */
-function mapLoadingError() {
+function GooglemapLoadingError() {
   alertify.error(
     "Failed to load Google Maps <br /> Please check your internet connection."
   );
