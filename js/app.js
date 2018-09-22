@@ -150,6 +150,21 @@ function createInfoWindow(location) {
     phone_html + url_html + '</div>';
 }
 
+
+
+function changeMap() {
+  if (map === null)
+    return;
+
+  var bounds = new google.maps.LatLngBounds();
+  viewModel.locations().forEach(function (location) {
+    location.marker.setVisible(location.visibleMarker());
+    bounds.extend(location.marker.position);
+  });
+  map.fitBounds(bounds);
+}
+
+
 /*
  * @description The Starting Point
  */
@@ -164,10 +179,10 @@ function startApp() {
 
   infoWindow = new google.maps.InfoWindow();
   viewModel.getLocations(FSQ_URL);
-  // Subscribe to filteredLocations, change Map Items when it's changed.
-  //viewModel.filteredLocations.subscribe(function () {
-  //editMap();
-  //});
+
+  viewModel.filterLocations.subscribe(function () {
+    changeMap();
+  });
 }
 
 

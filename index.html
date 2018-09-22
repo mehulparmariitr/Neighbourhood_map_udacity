@@ -22,26 +22,7 @@
 
         <div class="container-fluid">
             <div class="row">
-                <!--aside class="col-xs-6 col-md-3 sidebar" data-bind="css:
-                    {'sidebar_shown': hamburgerMenuShown}">
-                    <div class="row">
-                        <div class="col-md-12 col-xs-12">
-                            <form action="">
-                                <div class="form-group">
-                                    <input data-bind="textInput: filterText"
-                                        type="text" class="form-control"
-                                        placeholder="Filter locations ...">
-                                </div>
-                            </form>
-
-                            <ul class="list-unstyled" data-bind="foreach:
-                                filteredLocations">
-                                <li><a href="#" data-bind="text: name, click:
-                                        $parent.showItemInfo"></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </aside-->
+                
 
                 <div class="main-container col-xs-12 col-md-9" data-bind="css:
                     {'sidebar_shown': hamburgerMenuShown}">
@@ -61,6 +42,29 @@
                         </main>
                     </div>
                 </div>
+
+
+                <aside class="col-xs-6 col-md-3 sidebar" data-bind="css:
+                    {'sidebar_shown': hamburgerMenuShown}">
+                    <div class="row">
+                        <div class="col-md-12 col-xs-12">
+                            <form action="">
+                                <div class="form-group">
+                                    <input data-bind="textInput: filterText"
+                                        type="text" class="form-control"
+                                        placeholder="Filter locations ...">
+                                </div>
+                            </form>
+
+                            <ul class="list-unstyled" data-bind="foreach:
+                                filterLocations">
+                                <li><a href="#" data-bind="text: name, click:
+                                        $parent.showItemInfo"></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </aside>
+
             </div>
         </div>
 
