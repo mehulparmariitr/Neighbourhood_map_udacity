@@ -14,6 +14,10 @@ var FSQ_URL =
 
 var map = null;
 
+
+
+
+//model for the program
 var Model = function (data) {
   var self = this;
 
@@ -37,6 +41,9 @@ var Model = function (data) {
 };
 
 
+
+
+// ViewModel for the program
 var viewModel = function (data) {
   var self = this;
 
@@ -83,6 +90,20 @@ var viewModel = function (data) {
     });
   };
 
+  this.filterLocations = ko.computed(function () {
+    var ans = [];
+    for (var i = 0; i < self.locations().length; i++) {
+      var currLoc = self.locations()[i];
+      if (currLoc.name.toLowerCase().indexOf(self.filterText().toLowerCase()) !== -1) {
+        currLoc.visibleMarker(true);
+        ans.push(currLoc);
+      } else {
+        currLoc.visibleMarker(false);
+      }
+    }
+    return ans;
+  });
+
 
 
 }
@@ -97,7 +118,6 @@ function setupMarkers() {
       return function () {
         infoWindow.setContent(currentLocation.infoWindowContent);
         infoWindow.open(map, currentLocation.marker);
-        toggleBounce(currentLocation.marker);
       }
     }(currentLocation));
 
