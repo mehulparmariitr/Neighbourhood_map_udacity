@@ -9,7 +9,7 @@ var FSQ_URL =
   CLIENT_ID +
   "&client_secret=" +
   CLIENT_SECRET +
-  "&near=Pune&limit=" +
+  "&near=Pune&v=20180922&limit=" +
   SEARCH_LIMIT;
 
 var map = null;
@@ -41,6 +41,13 @@ var viewModel = function (data) {
   var self = this;
 
   this.locations = ko.observableArray();
+
+  this.hamburgerMenuShown = ko.observable(false);
+  this.showHamburgerMenu = function () {
+    this.hamburgerMenuShown(!this.hamburgerMenuShown());
+  };
+  this.filterText = ko.observable('');
+
 
   this.getLocations = function (url) {
     $.getJSON(url, function (data) {
@@ -76,6 +83,27 @@ var viewModel = function (data) {
     });
   };
 
+
+
+}
+
+
+function setupMarkers() {
+  var bounds = new google.maps.LatLngBounds();
+  viewModel.locations().forEach(function (currentLocation) {
+    bounds.extend(currentLocation.marker.position);
+    currentLocation.marker.setMap(map);
+    currentLocation.marker.addListener('click', function (currentLocation) {
+      return function () {
+        infoWindow.setContent(currentLocation.infoWindowContent);
+        infoWindow.open(map, currentLocation.marker);
+        toggleBounce(currentLocation.marker);
+      }
+    }(currentLocation));
+
+  });
+
+  map.fitBounds(bounds);
 }
 
 /*
@@ -87,12 +115,27 @@ function GooglemapLoadingError() {
   );
 }
 
+
+function createInfoWindow(location) {
+
+  var url_href = '<a href="' + location.url + '"><i class="fa fa-home"></i> ' + location.url + '</a><br />';
+  var url_html = location.url !== undefined ? url_href : '<i class="fa fa-home"></i> No website found.<br />';
+
+  var phone_href = '<a href="tel:' + location.phone + '"><i class="fa fa-phone"></i>' + location.phone + '</a><br />';
+  var phone_html = location.phone !== undefined ? phone_href : '<i class="fa fa-phone"></i> No phone number(s) found.<br />';
+
+  return '<div id="info-window-content">' +
+    '<h3 id="firstHeading" class="firstHeading">' + location.name + '</h3>' +
+    '<i class="fa fa-location-arrow"></i> ' + location.address() + '<br />' +
+    phone_html + url_html + '</div>';
+}
+
 /*
  * @description The Starting Point
  */
 function startApp() {
-  //viewModel = new AppViewModel();
-  //ko.applyBindings(viewModel);
+  viewModel = new viewModel();
+  ko.applyBindings(viewModel);
 
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: -34.397, lng: 150.644 },
@@ -100,9 +143,13 @@ function startApp() {
   });
 
   infoWindow = new google.maps.InfoWindow();
-  //viewModel.loadLocations(FSQ_REQUEST_URL);
+  viewModel.getLocations(FSQ_URL);
   // Subscribe to filteredLocations, change Map Items when it's changed.
   //viewModel.filteredLocations.subscribe(function () {
   //editMap();
   //});
 }
+
+
+
+
