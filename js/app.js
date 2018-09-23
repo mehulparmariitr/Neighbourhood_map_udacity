@@ -52,7 +52,6 @@ var viewModel = function (data) {
   this.hamburgerMenuShown = ko.observable(false);
   this.showHamburgerMenu = function () {
     this.hamburgerMenuShown(!this.hamburgerMenuShown());
-    alert(this.hamburgerMenuShown())
   };
   this.filterText = ko.observable('');
 
