@@ -52,18 +52,18 @@ a:active {
 /* Media Queries */
 
 @media screen and (max-width: 991px) {
-  nav {
+  #navbarid {
     display: block;
   }
 
-  .sidebar {
+  #sidebarid {
     padding: 0;
     width: 0;
   }
 }
 
 @media screen and (min-width: 992px) {
-  .sidebar {
+  #sidebarid {
     width: 25%;
   }
 
@@ -71,13 +71,18 @@ a:active {
     width: 75%;
   }
 
-  nav {
+  #navbarid
+  {
     display: none;
+
   }
+  
+
 }
 
 .sidebar_shown {
-  width: 50%;
+  width: 100%;
+  background-color: aquamarine
 }
 
 aside form {

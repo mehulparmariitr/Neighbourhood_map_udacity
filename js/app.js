@@ -1,7 +1,7 @@
 /*
  Foursquare API Constants.
  */
-var SEARCH_LIMIT = 20;
+var SEARCH_LIMIT = 19;
 var CLIENT_SECRET = "LEF3BO5TX2WFHKXCPE4URBDMFEIUM1XWOJZFEWNZGMIYZRD5";
 var CLIENT_ID = "SDNP0JJPPKBKKG11KRSF13ROYLCFMV21UFO0V0EOQV3EZYGN";
 var FSQ_URL =
@@ -52,9 +52,9 @@ var viewModel = function (data) {
   this.hamburgerMenuShown = ko.observable(false);
   this.showHamburgerMenu = function () {
     this.hamburgerMenuShown(!this.hamburgerMenuShown());
+    alert(this.hamburgerMenuShown())
   };
   this.filterText = ko.observable('');
-
 
   this.getLocations = function (url) {
     $.getJSON(url, function (data) {
@@ -103,6 +103,14 @@ var viewModel = function (data) {
     }
     return ans;
   });
+
+  this.showItemInfo = function (e) {
+    infoWindow.setContent(e.infoWindowContent);
+    infoWindow.open(map, e.marker);
+    toggleBounce(e.marker);
+
+    map.panTo(e.marker.getPosition());
+  };
 
 
 
@@ -163,6 +171,24 @@ function changeMap() {
   });
   map.fitBounds(bounds);
 }
+
+
+$(document).ready(function () {
+  // run test on initial page load
+  checkSize();
+
+  // run test on resize of the window
+  $(window).resize(checkSize);
+});
+
+//Function to the css rule
+function checkSize() {
+  if ($('nav').css('display') === 'none') {
+    $('.main-container').removeClass('sidebar_shown');
+    $('.sidebar').removeClass('sidebar_shown');
+  }
+}
+
 
 
 /*
