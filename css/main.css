@@ -80,7 +80,6 @@ a:active {
 .sidebar_shown {
   width: 50% !important;
   display: block !important;
-  background-color: aquamarine;
 }
 
 aside form {
