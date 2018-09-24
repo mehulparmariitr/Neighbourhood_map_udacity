@@ -57,6 +57,7 @@ a:active {
   }
 
   #sidebarid {
+    display: none;
     padding: 0;
     width: 0;
   }
@@ -71,18 +72,15 @@ a:active {
     width: 75%;
   }
 
-  #navbarid
-  {
+  #navbarid {
     display: none;
-
   }
-  
-
 }
 
 .sidebar_shown {
-  width: 50%;
-  background-color: aquamarine
+  width: 50% !important;
+  display: block !important;
+  background-color: aquamarine;
 }
 
 aside form {
@@ -118,7 +116,6 @@ aside li a:active {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-.sidebarcolor
-{
-  background-color: #690303
+.sidebarcolor {
+  background-color: #690303;
 }
