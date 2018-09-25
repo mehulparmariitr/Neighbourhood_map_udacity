@@ -117,4 +117,5 @@ aside li a:active {
 
 .sidebarcolor {
   background-color: #690303;
+  overflow: scroll;
 }
